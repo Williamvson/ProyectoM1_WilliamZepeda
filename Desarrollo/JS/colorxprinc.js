@@ -1,44 +1,67 @@
 
-function generarColorHexadecimal() {
-    const caracteres = "0123456789ABCDEF";
+function generarColor() {
+    const numerosYletras = "0123456789ABCDEF";
     let color = "#";
 
     for (let i = 0; i < 6; i++) {
-        const indiceAleatorio = Math.floor(Math.random() * 16);
-        color += caracteres[indiceAleatorio];
+        const posicion = Math.floor(Math.random() * numerosYletras.length);
+        color = color + numerosYletras[posicion];
     }
 
     return color;
 }
 
+function generarColorRGB() {
+    const rojo = Math.floor(Math.random() * 256);
+    const verde = Math.floor(Math.random() * 256);
+    const azul = Math.floor(Math.random() * 256);
+
+    return `rgb(${rojo}, ${verde}, ${azul})`;
+}
+
+function generarColorHSL() {
+    const tono = Math.floor(Math.random() * 360);
+    const saturacion = Math.floor(Math.random() * 101);
+    const luminosidad = Math.floor(Math.random() * 101);
+
+    return `hsl(${tono}, ${saturacion}%, ${luminosidad}%)`;
+}
+
+function obtenerColorSegunFormato(formato) {
+    if (formato === "rgb") {
+        return generarColorRGB();
+    }
+
+    if (formato === "hsl") {
+        return generarColorHSL();
+    }
+
+    return generarColor();
+}
+
 function crearColores() {
-    const inputCantidad = document.getElementById("cantidad");
+    const cajaCantidad = document.getElementById("cantidad");
+    const cajaFormato = document.getElementById("formatoColor");
     const contenedor = document.getElementById("contenedorColores");
-    const cantidad = parseInt(inputCantidad.value, 10);
+    const cantidad = Number(cajaCantidad.value);
+    const formato = cajaFormato.value;
+    const opcionesValidas = [6, 8, 9];
 
     contenedor.innerHTML = "";
 
-    if (isNaN(cantidad) || cantidad < 1 || cantidad > 9) {
-        contenedor.innerHTML = "<p>Ingresa una cantidad entre 1 y 9.</p>";
+    if (isNaN(cantidad) || !opcionesValidas.includes(cantidad)) {
+        contenedor.innerHTML = "<p>Elige 6, 8 o 9 colores.</p>";
         return;
     }
 
     for (let i = 0; i < cantidad; i++) {
-        const color = generarColorHexadecimal();
+        const nuevoColor = obtenerColorSegunFormato(formato);
+        const tarjeta = document.createElement("div");
 
-        const tarjetaColor = document.createElement("div");
-        tarjetaColor.style.backgroundColor = color;
-        tarjetaColor.style.width = "120px";
-        tarjetaColor.style.height = "120px";
-        tarjetaColor.style.display = "inline-flex";
-        tarjetaColor.style.alignItems = "center";
-        tarjetaColor.style.justifyContent = "center";
-        tarjetaColor.style.margin = "10px";
-        tarjetaColor.style.borderRadius = "12px";
-        tarjetaColor.style.fontWeight = "bold";
-        tarjetaColor.style.color = "#ffffff";
-        tarjetaColor.textContent = color;
+        tarjeta.className = "tarjeta-color";
+        tarjeta.style.backgroundColor = nuevoColor;
+        tarjeta.textContent = nuevoColor;
 
-        contenedor.appendChild(tarjetaColor);
+        contenedor.appendChild(tarjeta);
     }
 }
