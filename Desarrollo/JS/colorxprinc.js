@@ -1,4 +1,3 @@
-
 function generarColor() {
     const numerosYletras = "0123456789ABCDEF";
     let color = "#";
@@ -17,14 +16,6 @@ function generarColorRGB() {
     const azul = Math.floor(Math.random() * 256);
 
     return `rgb(${rojo}, ${verde}, ${azul})`;
-}
-
-function generarColorHSL() {
-    const tono = Math.floor(Math.random() * 360);
-    const saturacion = Math.floor(Math.random() * 101);
-    const luminosidad = Math.floor(Math.random() * 101);
-
-    return `hsl(${tono}, ${saturacion}%, ${luminosidad}%)`;
 }
 
 function obtenerColorSegunFormato(formato) {
@@ -65,3 +56,21 @@ function crearColores() {
         contenedor.appendChild(tarjeta);
     }
 }
+
+function decorarTitulos() {
+    const titulos = document.querySelectorAll("header h1, header h2, main h1");
+
+    titulos.forEach((titulo) => {
+        const texto = titulo.textContent;
+        titulo.innerHTML = "";
+
+        for (const letra of texto) {
+            const span = document.createElement("span");
+            span.className = "letra-color";
+            span.innerHTML = letra === " " ? "&nbsp;" : letra;
+            titulo.appendChild(span);
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", decorarTitulos);
